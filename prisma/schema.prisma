@@ -91,6 +91,7 @@ model Issue {
   userId    String
   imageUrl  String?
   videoUrl  String?
+  upvotes   Int      @default(0)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   Service   Service? @relation(fields: [serviceId], references: [id])
   serviceId String?
