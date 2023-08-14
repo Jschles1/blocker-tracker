@@ -1,7 +1,8 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { api } from "~/utils/api";
+import { Button } from "~/components/ui/button";
+import { api } from "~/lib/api";
 
 export default function Home() {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
@@ -57,6 +58,8 @@ export default function Home() {
 function AuthShowcase() {
   const { data: sessionData } = useSession();
 
+  console.log("sessionData", sessionData);
+
   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined }
@@ -68,12 +71,12 @@ function AuthShowcase() {
         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
         {secretMessage && <span> - {secretMessage}</span>}
       </p>
-      <button
+      <Button
         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
         onClick={sessionData ? () => void signOut() : () => void signIn()}
       >
         {sessionData ? "Sign out" : "Sign in"}
-      </button>
+      </Button>
     </div>
   );
 }
