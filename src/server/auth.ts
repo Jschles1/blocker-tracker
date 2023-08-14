@@ -4,10 +4,12 @@ import {
   getServerSession,
   type NextAuthOptions,
   type DefaultSession,
+  type DefaultUser,
 } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
+import { type UserRole } from "~/utils/interfaces";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -20,14 +22,14 @@ declare module "next-auth" {
     user: DefaultSession["user"] & {
       id: string;
       // ...other properties
-      // role: UserRole;
+      role: UserRole;
     };
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User extends DefaultUser {
+    // ...other properties
+    role: UserRole;
+  }
 }
 
 /**
