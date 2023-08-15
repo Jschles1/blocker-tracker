@@ -2,18 +2,31 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+    screens: {
+      sm: "375px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1400px",
+    },
+    colors: {
+      transparent: "transparent",
+      fuschia: "hsla(282, 83%, 52%, 1)",
+      blue: "hsla(230, 76%, 59%, 1)",
+      slate: "hsla(230, 31%, 31%, 1)",
+      white: "hsla(0, 0%, 100%, 1)",
+      "light-lavender": "hsla(231, 100%, 97%, 1)",
+      gray: "hsla(230, 60%, 98%, 1)",
+      "dark-blue": "hsla(230, 60%, 98%, 1)",
+      "dark-gray": "hsla(224, 20%, 49%, 1)",
+      peach: "hsla(14, 83%, 74%, 1)",
+      "light-blue": "hsla(14, 83%, 74%, 1)",
     },
     extend: {
       colors: {
@@ -73,4 +86,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
