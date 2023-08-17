@@ -6,7 +6,8 @@ import {
   type DefaultSession,
   type DefaultUser,
 } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+import GoogleProvider from "next-auth/providers/google";
+import AtlassianProvider from "next-auth/providers/atlassian";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 import { type UserRole } from "~/lib/interfaces";
@@ -44,14 +45,54 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: user.id,
+        role: user.role,
       },
     }),
   },
+  events: {
+    createUser({ user }) {
+      console.log("New User Created: ", user);
+    },
+    async signIn({ user, account, profile: _, isNewUser }) {
+      if (
+        isNewUser &&
+        !!account &&
+        account.provider === "atlassian" &&
+        user.role === "USER"
+      ) {
+        // TODO: Figure out more optimal way to do this
+        console.log("New Admin User detected: Updating user role to ADMIN");
+        await prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            role: "ADMIN",
+          },
+        });
+        user.role = "ADMIN";
+      } else if (user.role === "USER") {
+        console.log("Regular User detected: ", user);
+      }
+      console.log("Signed in user: ", user);
+    },
+  },
   adapter: PrismaAdapter(prisma),
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
+    GoogleProvider({
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    }),
+    AtlassianProvider({
+      clientId: env.ATLASSIAN_CLIENT_ID,
+      clientSecret: env.ATLASSIAN_CLIENT_SECRET,
+      authorization: {
+        params: {
+          scope:
+            "write:jira-work read:jira-work read:jira-user offline_access read:me",
+          redirect_uri: env.ATLASSIAN_REDIRECT_URI,
+        },
+      },
     }),
     /**
      * ...add more providers here.

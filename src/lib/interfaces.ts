@@ -19,7 +19,4 @@ export interface Service {
   userId: string;
 }
 
-export enum UserRole {
-  ADMIN = "ADMIN",
-  USER = "USER",
-}
+export type UserRole = "ADMIN" | "USER";
