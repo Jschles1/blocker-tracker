@@ -23,7 +23,7 @@ module.exports = {
       white: "hsla(0, 0%, 100%, 1)",
       "light-lavender": "hsla(231, 100%, 97%, 1)",
       gray: "hsla(230, 60%, 98%, 1)",
-      "dark-blue": "hsla(230, 60%, 98%, 1)",
+      "dark-blue": "hsla(224, 20%, 49%, 1)",
       "dark-gray": "hsla(224, 20%, 49%, 1)",
       peach: "hsla(14, 83%, 74%, 1)",
       "light-blue": "hsla(14, 83%, 74%, 1)",
