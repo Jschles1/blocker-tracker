@@ -1,3 +1,5 @@
+import Navigation from "./navigation";
+
 type AppLayoutProps = {
   children: React.ReactElement;
 };
@@ -5,8 +7,8 @@ type AppLayoutProps = {
 export default function Layout({ children }: AppLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray">
-      <header>Navigation</header>
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
+      <Navigation />
+      <main className="flex w-full flex-1 flex-col items-center justify-center text-center">
         {children}
       </main>
     </div>
