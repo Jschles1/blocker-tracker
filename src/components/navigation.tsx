@@ -15,7 +15,6 @@ import {
 
 export default function Navigation() {
   const { data: sessionData } = useSession();
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   function handleMenuClick() {
     console.log("Menu clicked");
@@ -28,7 +27,7 @@ export default function Navigation() {
   // background: radial-gradient(166.82% 166.82% at 103.90% -10.39%, #E84D70 0%, #A337F6 53.09%, #28A7ED 100%);
   return (
     <>
-      <header className="z-[51] h-[72px] w-full bg-blue px-6 py-4 text-white">
+      <header className="z-[51] h-[72px] w-full bg-gradient-to-r from-[#E84D70] via-[#A337F6] to-[#28A7ED] px-6 py-4 text-white">
         <div className="flex h-full w-full items-center justify-between">
           <h1>Blocker Tracker</h1>
           {/* Mobile */}
@@ -56,7 +55,7 @@ export default function Navigation() {
             <Sheet>
               <SheetTrigger asChild>
                 <Button
-                  className="pl-4 md:hidden"
+                  className="pl-4"
                   variant="ghost"
                   size="icon"
                   onClick={handleMenuClick}
