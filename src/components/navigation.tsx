@@ -13,11 +13,21 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 
+const MenuIcons = {
+  open: () => <X />,
+  closed: () => <Menu />,
+};
+
 export default function Navigation() {
   const { data: sessionData } = useSession();
+  const [menuStatus, setMenuStatus] = React.useState<"open" | "closed">(
+    "closed"
+  );
+  const MenuIcon = MenuIcons[menuStatus];
 
-  function handleMenuClick() {
+  function handleMenuClick(open: boolean) {
     console.log("Menu clicked");
+    open ? setMenuStatus("open") : setMenuStatus("closed");
   }
 
   function handleUserButtonClick() {
@@ -52,15 +62,10 @@ export default function Navigation() {
               </SheetContent>
             </Sheet>
 
-            <Sheet>
+            <Sheet onOpenChange={handleMenuClick}>
               <SheetTrigger asChild>
-                <Button
-                  className="pl-4"
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleMenuClick}
-                >
-                  <Menu />
+                <Button className="ml-4" variant="ghost" size="icon">
+                  <MenuIcon />
                 </Button>
               </SheetTrigger>
               <SheetContent>
