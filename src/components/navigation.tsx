@@ -12,6 +12,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
+import MobileAuth from "./auth/mobile-auth";
+import { Card } from "./ui/card";
+
+type MenuStatus = "open" | "closed";
 
 const MenuIcons = {
   open: () => <X />,
@@ -20,9 +24,7 @@ const MenuIcons = {
 
 export default function Navigation() {
   const { data: sessionData } = useSession();
-  const [menuStatus, setMenuStatus] = React.useState<"open" | "closed">(
-    "closed"
-  );
+  const [menuStatus, setMenuStatus] = React.useState<MenuStatus>("closed");
   const MenuIcon = MenuIcons[menuStatus];
 
   function handleMenuClick(open: boolean) {
@@ -42,25 +44,7 @@ export default function Navigation() {
           <h1>Blocker Tracker</h1>
           {/* Mobile */}
           <div className="flex items-center">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleUserButtonClick}
-                >
-                  <UserCircle />
-                </Button>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>Edit profile</SheetTitle>
-                  <SheetDescription>Description</SheetDescription>
-                </SheetHeader>
-                <div className="grid gap-4 py-4">Hello</div>
-                <SheetFooter></SheetFooter>
-              </SheetContent>
-            </Sheet>
+            <MobileAuth />
 
             <Sheet onOpenChange={handleMenuClick}>
               <SheetTrigger asChild>
@@ -69,12 +53,14 @@ export default function Navigation() {
                 </Button>
               </SheetTrigger>
               <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>Main Menu</SheetTitle>
-                  <SheetDescription>Description</SheetDescription>
-                </SheetHeader>
-                <div className="grid gap-4 py-4">Hello</div>
-                <SheetFooter></SheetFooter>
+                <Card>
+                  <SheetHeader>
+                    <SheetTitle>Main Menu</SheetTitle>
+                    <SheetDescription>Description</SheetDescription>
+                  </SheetHeader>
+                  <div className="grid gap-4 py-4">Hello</div>
+                  <SheetFooter></SheetFooter>
+                </Card>
               </SheetContent>
             </Sheet>
           </div>
