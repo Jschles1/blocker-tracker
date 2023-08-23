@@ -2,13 +2,32 @@ import * as React from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import type { GetServerSideProps } from "next";
 import { Button } from "~/components/ui/button";
 import Layout from "~/components/layout";
 import HomeServiceActions from "~/components/services/home-service-actions";
 import NoServicesListed from "~/components/services/no-services-listed";
 import { api } from "~/lib/api";
+import { getServerAuthSession } from "~/server/auth";
 
-const ServiceViews = {};
+// const ServiceViews = {};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getServerAuthSession(ctx);
+
+  if (session?.user?.role === "ADMIN" && session?.user?.isNewUser) {
+    return {
+      redirect: {
+        destination: "/create-service",
+      },
+      props: { session },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+};
 
 export default function Home() {
   const { data, isLoading } = api.service.getAll.useQuery();

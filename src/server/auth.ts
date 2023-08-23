@@ -24,12 +24,15 @@ declare module "next-auth" {
       id: string;
       // ...other properties
       role: UserRole;
+      email: string;
+      isNewUser: boolean;
     };
   }
 
   interface User extends DefaultUser {
     // ...other properties
     role: UserRole;
+    isNewUser: boolean;
   }
 }
 
@@ -46,6 +49,7 @@ export const authOptions: NextAuthOptions = {
         ...session.user,
         id: user.id,
         role: user.role,
+        isNewUser: user.isNewUser,
       },
     }),
   },
@@ -54,26 +58,30 @@ export const authOptions: NextAuthOptions = {
       console.log("New User Created: ", user);
     },
     async signIn({ user, account, profile: _, isNewUser }) {
-      if (
-        isNewUser &&
-        !!account &&
-        account.provider === "atlassian" &&
-        user.role === "USER"
-      ) {
-        // TODO: Figure out more optimal way to do this
-        console.log("New Admin User detected: Updating user role to ADMIN");
-        await prisma.user.update({
-          where: {
-            id: user.id,
-          },
-          data: {
-            role: "ADMIN",
-          },
-        });
-        user.role = "ADMIN";
-      } else if (user.role === "USER") {
+      if (isNewUser) {
+        if (
+          !!account &&
+          account.provider === "atlassian" &&
+          user.role === "USER"
+        ) {
+          // TODO: Figure out more optimal way to do this
+          console.log("New Admin User detected: Updating user role to ADMIN");
+          await prisma.user.update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              role: "ADMIN",
+            },
+          });
+          user.role = "ADMIN";
+        }
+        user.isNewUser = true;
+      }
+      if (user.role === "USER") {
         console.log("Regular User detected: ", user);
       }
+
       console.log("Signed in user: ", user);
     },
   },

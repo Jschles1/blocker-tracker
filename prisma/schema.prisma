@@ -53,6 +53,7 @@ model User {
   emailVerified DateTime?
   image         String?
   role          Role      @default(USER)
+  isNewUser     Boolean   @default(true)
   issues        Issue[]
   service       Service?
   accounts      Account[]
